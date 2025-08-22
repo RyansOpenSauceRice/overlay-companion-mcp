@@ -62,11 +62,11 @@ public partial class MainWindow : Window
     private TextBox? _testOverlayDurationInput;
     private Button? _createTestOverlayButton;
 
-    public MainWindow(IServiceProvider serviceProvider, ILogger<MainWindow> logger, IHostApplicationLifetime applicationLifetime)
+    public MainWindow(IServiceProvider? serviceProvider, ILogger<MainWindow>? logger, IHostApplicationLifetime? applicationLifetime)
     {
-        _serviceProvider = serviceProvider;
-        _logger = logger;
-        _applicationLifetime = applicationLifetime;
+        _serviceProvider = serviceProvider!;
+        _logger = logger!;
+        _applicationLifetime = applicationLifetime!;
 
         // Skip XAML loading for now - create a simple window
         Title = "Overlay Companion MCP Server";
@@ -76,12 +76,14 @@ public partial class MainWindow : Window
         // Create a simple text block for now
         Content = new TextBlock 
         { 
-            Text = "Overlay Companion MCP Server\n\nGUI temporarily disabled - use command line options:\n\n--http : Start HTTP server\n--no-gui : Run in headless mode",
+            Text = "Overlay Companion MCP Server\n\nGUI temporarily disabled - use command line options:\n\n--http --no-gui : Start HTTP server\n--no-gui : Run in headless mode\n\nClose this window to continue with CLI mode.",
             Margin = new Avalonia.Thickness(20),
-            TextWrapping = Avalonia.Media.TextWrapping.Wrap
+            TextWrapping = Avalonia.Media.TextWrapping.Wrap,
+            FontSize = 14
         };
 
-        _logger.LogInformation("Main window initialized (simplified mode)");
+        // Only log if logger is available
+        logger?.LogInformation("Main window initialized (simplified mode)");
     }
 
     private void InitializeControls()
@@ -250,7 +252,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error starting/stopping server");
+            _logger?.LogError(ex, "Error starting/stopping server");
             LogMessage($"Error: {ex.Message}");
         }
     }
@@ -297,7 +299,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error saving settings");
+            _logger?.LogError(ex, "Error saving settings");
             LogMessage($"Error saving settings: {ex.Message}");
         }
     }
@@ -645,7 +647,7 @@ export MCP_OVERLAY_ALLOW_CLIPBOARD_ACCESS=""{(_allowClipboardAccessCheckBox?.IsC
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error stopping session");
+            _logger?.LogError(ex, "Error stopping session");
             LogMessage($"Error stopping session: {ex.Message}");
         }
     }
@@ -664,7 +666,7 @@ export MCP_OVERLAY_ALLOW_CLIPBOARD_ACCESS=""{(_allowClipboardAccessCheckBox?.IsC
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error resuming session");
+            _logger?.LogError(ex, "Error resuming session");
             LogMessage($"Error resuming session: {ex.Message}");
         }
     }
@@ -683,7 +685,7 @@ export MCP_OVERLAY_ALLOW_CLIPBOARD_ACCESS=""{(_allowClipboardAccessCheckBox?.IsC
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error clearing overlays");
+            _logger?.LogError(ex, "Error clearing overlays");
             LogMessage($"Error clearing overlays: {ex.Message}");
         }
     }
@@ -730,7 +732,7 @@ export MCP_OVERLAY_ALLOW_CLIPBOARD_ACCESS=""{(_allowClipboardAccessCheckBox?.IsC
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating test overlay");
+            _logger?.LogError(ex, "Error creating test overlay");
             LogMessage($"Error creating test overlay: {ex.Message}");
         }
     }
@@ -779,7 +781,7 @@ export MCP_OVERLAY_ALLOW_CLIPBOARD_ACCESS=""{(_allowClipboardAccessCheckBox?.IsC
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error refreshing overlays list");
+            _logger?.LogError(ex, "Error refreshing overlays list");
         }
     }
 
